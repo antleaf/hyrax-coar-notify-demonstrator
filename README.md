@@ -1,2 +1,2 @@
-# hyrax-coar-notify-demonstrator
-Hyrax Rails application to demonstrate the hyrax-coar-notify gem
+# hyrax-coar-notify
+COAR Notify Protocol implementation in Hyrax
