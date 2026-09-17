@@ -5,6 +5,7 @@
 class DatasetIndexer < Hyrax::Indexers::PcdmObjectIndexer(Dataset)
   include Hyrax::Indexer(:basic_metadata)
   include Hyrax::Indexer(:dataset)
+  include Hyrax::Indexer(:coar_notify_metadata)
 
   # Uncomment this block if you want to add custom indexing behavior:
   #  def to_solr
