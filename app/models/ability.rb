@@ -19,9 +19,8 @@ class Ability
     # end
 
     return unless current_user.admin?
-    can [:manage], NotifyService
-    can [:manage], NotifyInbox
-    can :access, :notify_dashboard
-    can :access, :manage_notify_connections
+    can [:manage], Hyrax::CoarNotify::NotifyService
+    can [:manage], Hyrax::CoarNotify::NotifyInbox
+    can :access, :coar_notify
   end
 end

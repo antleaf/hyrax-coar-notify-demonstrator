@@ -9,11 +9,7 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
-  # Add routes for the Notify Dashboard and Notify Inboxes
-  resources :notify_inboxes, except: [:index, :show]
-  resources :notify_services, except: [:index, :show]
-  get "notify_dashboard", to: "notify_dashboard#index"
-  get "manage_notify_connections", to: "notify_dashboard#manage_connections", as: :manage_notify_connections
+  mount Hyrax::CoarNotify::Engine => '/coar_notify'
 
   devise_for :users
   mount Hydra::RoleManagement::Engine => '/'
