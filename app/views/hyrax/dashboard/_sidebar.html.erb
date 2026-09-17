@@ -17,14 +17,13 @@
         <span class="fa fa-home" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.dashboard') %></span>
       <% end %>
     </li>
-    <li>
-      <%= link_to main_app.notify_dashboard_path, class: "nav-link", title: "Notify Dashboard" do %>
-        <span class="fa fa-bell" aria-hidden="true"></span> <span class="sidebar-action-text">Notify Dashboard</span>
-      <% end %>
-    </li>
     <%= render 'hyrax/dashboard/sidebar/activity', menu: menu %>
     <%= render 'hyrax/dashboard/sidebar/repository_content', menu: menu %>
     <%= render 'hyrax/dashboard/sidebar/tasks', menu: menu %>
     <%= render 'hyrax/dashboard/sidebar/configuration', menu: menu %>
   </ul>
-</nav>
+</nav><li>
+  <%= link_to (defined?(hyrax_coar_notify) ? hyrax_coar_notify.root_path : "/coar_notify"), class: "nav-link", title: I18n.t('coar_notify.title') do %>
+    <span class="fa fa-bell" aria-hidden="true"></span> <span class="sidebar-action-text"><%= I18n.t('coar_notify.title') %></span>
+  <% end %>
+</li>
