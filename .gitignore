@@ -7,6 +7,7 @@
 /.idea
 .DS_Store
 .nova
+public/storage
 
 # Ignore bundler config.
 /.bundle
