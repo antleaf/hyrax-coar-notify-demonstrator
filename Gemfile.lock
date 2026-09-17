@@ -7,8 +7,10 @@ GIT
       coarnotify (>= 0.0.1)
       rails (>= 6.0, < 9.0)
 
-PATH
-  remote: ../hyrax-coar-notify
+GIT
+  remote: https://github.com/antleaf/hyrax-coar-notify.git
+  revision: b838a502b682fb74efddabbe7a72effac851dcb4
+  branch: feature/gemification
   specs:
     hyrax-coar-notify (0.1.0)
       coar_notify_inbox
