@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_08_053058) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_17_081816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -38,6 +38,82 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_08_053058) do
     t.boolean "passed"
     t.index ["checked_uri"], name: "index_checksum_audit_logs_on_checked_uri"
     t.index ["file_set_id", "file_id"], name: "by_file_set_id_and_file_id"
+  end
+
+  create_table "coar_notify_inbox_consumers", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "target_uri", null: false
+    t.json "origin_uris", default: [], null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username", "target_uri"], name: "index_coar_notify_inbox_consumers_on_username_and_target_uri", unique: true
+  end
+
+  create_table "coar_notify_inbox_notification_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.text "notification_ids"
+    t.integer "lock_version", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_coar_notify_inbox_notification_types_on_name", unique: true
+  end
+
+  create_table "coar_notify_inbox_notifications", force: :cascade do |t|
+    t.string "username", null: false
+    t.text "origin_uri", null: false
+    t.text "target_uri", null: false
+    t.text "raw_payload", null: false
+    t.bigint "notification_type_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notification_type_id"], name: "index_coar_notify_inbox_notifications_on_notification_type_id"
+    t.index ["origin_uri"], name: "index_coar_notify_inbox_notifications_on_origin_uri"
+    t.index ["target_uri"], name: "index_coar_notify_inbox_notifications_on_target_uri"
+    t.index ["username"], name: "index_coar_notify_inbox_notifications_on_username"
+  end
+
+  create_table "coar_notify_inbox_origins", force: :cascade do |t|
+    t.string "uri", null: false
+    t.json "senders", default: [], null: false
+    t.json "consumers", default: [], null: false
+    t.integer "lock_version", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uri"], name: "index_coar_notify_inbox_origins_on_uri", unique: true
+  end
+
+  create_table "coar_notify_inbox_senders", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "origin_uri", null: false
+    t.json "target_uris", default: [], null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username", "origin_uri"], name: "index_coar_notify_inbox_senders_on_username_and_origin_uri", unique: true
+  end
+
+  create_table "coar_notify_inbox_targets", force: :cascade do |t|
+    t.string "uri", null: false
+    t.json "senders", default: [], null: false
+    t.json "consumers", default: [], null: false
+    t.integer "lock_version", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uri"], name: "index_coar_notify_inbox_targets_on_uri", unique: true
+  end
+
+  create_table "coar_notify_inbox_users", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "name"
+    t.string "auth_token"
+    t.integer "role", default: 0, null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["auth_token"], name: "index_coar_notify_inbox_users_on_auth_token", unique: true
+    t.index ["username"], name: "index_coar_notify_inbox_users_on_username", unique: true
   end
 
   create_table "collection_branding_infos", force: :cascade do |t|
@@ -258,6 +334,23 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_08_053058) do
     t.boolean "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "inbox_url"
+  end
+
+  create_table "notify_requests", force: :cascade do |t|
+    t.string "work_id", null: false
+    t.bigint "notify_service_id", null: false
+    t.bigint "user_id"
+    t.string "request_type", null: false
+    t.string "status", default: "sent", null: false
+    t.string "notification_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notification_id"], name: "index_notify_requests_on_notification_id", unique: true
+    t.index ["notify_service_id"], name: "index_notify_requests_on_notify_service_id"
+    t.index ["status"], name: "index_notify_requests_on_status"
+    t.index ["user_id"], name: "index_notify_requests_on_user_id"
+    t.index ["work_id", "notify_service_id", "request_type"], name: "index_notify_requests_on_work_service_type"
   end
 
   create_table "notify_services", force: :cascade do |t|
@@ -268,6 +361,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_08_053058) do
     t.boolean "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "inbox_url"
   end
 
   create_table "orm_resources", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -622,11 +716,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_08_053058) do
     t.index ["work_id"], name: "index_work_view_stats_on_work_id"
   end
 
+  add_foreign_key "coar_notify_inbox_consumers", "coar_notify_inbox_users", column: "username", primary_key: "username", name: "fk_consumers_username_to_users_username"
+  add_foreign_key "coar_notify_inbox_notifications", "coar_notify_inbox_notification_types", column: "notification_type_id"
+  add_foreign_key "coar_notify_inbox_senders", "coar_notify_inbox_users", column: "username", primary_key: "username", name: "fk_senders_username_to_users_username"
   add_foreign_key "collection_type_participants", "hyrax_collection_types"
   add_foreign_key "curation_concerns_operations", "users"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
+  add_foreign_key "notify_requests", "notify_services"
+  add_foreign_key "notify_requests", "users"
   add_foreign_key "permission_template_accesses", "permission_templates"
   add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
   add_foreign_key "uploaded_files", "users"
