@@ -5,7 +5,7 @@
 # don't mount its routes here (the inbox is treated as an external service), which means its
 # db/migrate directory is still merged into this app's migration paths. Without this, any
 # db:migrate run raises "Unknown migration version '8.0'".
-if defined?(ActiveRecord::Migration::Compatibility)
+if Rails::VERSION::MAJOR < 8 && defined?(ActiveRecord::Migration::Compatibility)
   module ActiveRecord::Migration::Compatibility
     class << self
       prepend(Module.new do
