@@ -24,7 +24,28 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # Do content negotiation for AF models. 
+  # Do content negotiation for AF models.
 
   use_extension( Hydra::ContentNegotiation )
+
+  # hyrax-coar-notify's WorkShowPresenterBehavior#parsed_endorsements/#parsed_reviews
+  # fall back to solr_document.endorsements/.reviews/.has_endorsement/.has_review when
+  # the document doesn't respond to its own #parsed_endorsements/#parsed_reviews - but
+  # plain SolrDocument doesn't expose indexed fields as methods by default, so without
+  # these accessors that fallback always returns [] even when the fields are indexed.
+  def endorsements
+    self['endorsements_tesim']
+  end
+
+  def reviews
+    self['reviews_tesim']
+  end
+
+  def has_endorsement
+    self['has_endorsement_bsi']
+  end
+
+  def has_review
+    self['has_review_bsi']
+  end
 end
