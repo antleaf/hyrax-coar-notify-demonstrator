@@ -1,7 +1,18 @@
 :queues:
-  - default8
+  - default
+  - mailers
 
 :max_retries: 5
+
+# Polls the external COAR Notify inbox (hyrax-coar-notify). The gem defines
+# Hyrax::CoarNotify.config.fetch_schedule but never schedules anything itself.
+:scheduler:
+  :schedule:
+    coar_notify_fetch:
+      cron: '*/5 * * * *'
+      class: Hyrax::CoarNotify::FetchNotificationsJob
+      queue: default
+      active_job: true
 
 development:
   :concurrency: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
