@@ -1,3 +1,7 @@
+# hyrax-coar-notify also ships a task with this name. This app owns it (docker-entrypoint.sh
+# depends on it), so drop the gem's copy first; otherwise Rake runs both and every action twice.
+Rake::Task['notify:setup_hyrax'].clear if Rake::Task.task_defined?('notify:setup_hyrax')
+
 namespace :notify do
   desc 'Setup Hyrax, will read from specified file usage: notify:setup_hyrax["setup.json"]'
   task :"setup_hyrax", [:seedfile] => :environment do |task, args|
