@@ -67,7 +67,7 @@ bin/rails runner "
 
 | File | Purpose |
 |---|---|
-| `Gemfile` | The gem, with `require: "hyrax_coar_notify"` (needed because of its two-dash name) |
+| `Gemfile` | The gem, and `coar_notify_inbox` (its dependency, not published to RubyGems) |
 | `config/routes.rb` | Mounts the engine at `/coar_notify` |
 | `app/models/ability.rb` | Who may manage services and open the Notify pages |
 | `app/models/dataset.rb`, `app/indexers/dataset_indexer.rb` | `WorkBehavior` and the endorsement/review fields |
