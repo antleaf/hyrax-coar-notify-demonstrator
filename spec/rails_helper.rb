@@ -34,6 +34,9 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+# Hyrax's shared work examples (hyrax/specs/shared_specs) look up an adapter named :test_adapter.
+Valkyrie::MetadataAdapter.register(Valkyrie::Persistence::Memory::MetadataAdapter.new, :test_adapter)
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
