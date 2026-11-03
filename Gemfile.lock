@@ -9,8 +9,8 @@ GIT
 
 GIT
   remote: https://github.com/antleaf/hyrax-coar-notify.git
-  revision: b838a502b682fb74efddabbe7a72effac851dcb4
-  branch: feature/gemification
+  revision: 711f8f783fd7cce991c53a01393fb017b51696fa
+  branch: docs/installation_guide
   specs:
     hyrax-coar-notify (0.1.0)
       coar_notify_inbox

@@ -88,7 +88,7 @@ gem 'hydra-role-management'
 # COAR Notify integration - talks to an externally-hosted coar-notify-inbox-rails-engine
 # instance over HTTP; it is not mounted in this app (see docs/Hyrax Notify with external inbox.md
 # in the hyrax-coar-notify gem for the architecture this demonstrates).
-gem "hyrax-coar-notify", github: "antleaf/hyrax-coar-notify", branch: "feature/gemification"
+gem "hyrax-coar-notify", github: "antleaf/hyrax-coar-notify", branch: "docs/installation_guide"
 
 # coar_notify_inbox is a hard runtime dependency of hyrax-coar-notify's gemspec but is not
 # published to RubyGems, so it must be resolved here via git even though its engine is never mounted.
