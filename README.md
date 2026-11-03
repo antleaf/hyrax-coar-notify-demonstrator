@@ -71,7 +71,6 @@ bin/rails runner "
 | `config/routes.rb` | Mounts the engine at `/coar_notify` |
 | `app/models/ability.rb` | Who may manage services and open the Notify pages |
 | `app/models/dataset.rb`, `app/indexers/dataset_indexer.rb` | `WorkBehavior` and the endorsement/review fields |
-| `config/initializers/coar_notify_work_show_presenter.rb` | Adds the gem's presenter behaviour to Hyrax's work presenter |
 | `app/models/solr_document.rb` | Readers for the endorsement/review fields |
 | `app/views/hyrax/datasets/show.html.erb` | Renders the request buttons and the endorsements card |
 | `config/initializers/pcdm_member_presenter_factory_patch.rb` | Works around a Hyrax 5.2.0 bug that broke pages for works with files |
