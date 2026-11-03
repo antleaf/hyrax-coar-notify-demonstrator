@@ -9,10 +9,7 @@
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-12">
     <%= render 'work_title', presenter: @presenter %>
     <%= render 'show_actions', presenter: @presenter %>
-    <%# The gem's partial doesn't check permissions; only people who can edit the work may request. %>
-    <% if @presenter.editor? %>
-      <%= render 'hyrax/coar_notify/shared/endorsement_actions', presenter: @presenter %>
-    <% end %>
+    <%= render 'hyrax/coar_notify/shared/endorsement_actions', presenter: @presenter %>
     <div class="card">
       <div class="card-body">
         <div class="row">
