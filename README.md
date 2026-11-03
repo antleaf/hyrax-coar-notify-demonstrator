@@ -20,7 +20,7 @@ This is a Hyrax 5.2 app (Ruby 3.3, Rails 7.2, Postgres, Solr 9, Redis) that uses
 ### Run it with Docker
 
 ```bash
-cp .env.example .env      # set SECRET_KEY_BASE_PRODUCTION / DEVISE_SECRET_KEY and the COAR_NOTIFY_* values
+cp .env.template.development .env      # set SECRET_KEY_BASE and the COAR_NOTIFY_* values
 docker compose up -d --build
 ```
 
