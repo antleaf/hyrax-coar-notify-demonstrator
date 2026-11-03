@@ -6,6 +6,11 @@ class Ability
 
   # Define any customized permissions here.
   def custom_permissions
+    if current_user.admin? || user_groups.include?(Hyrax::CoarNotify.config.manager_role.to_s)
+      can [:manage], Hyrax::CoarNotify::NotifyService
+      can [:manage], Hyrax::CoarNotify::NotifyInbox
+      can :access, :coar_notify
+    end
     # Limits deleting objects to a the admin user
     #
     # if current_user.admin?
@@ -17,10 +22,5 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
-
-    return unless current_user.admin?
-    can [:manage], Hyrax::CoarNotify::NotifyService
-    can [:manage], Hyrax::CoarNotify::NotifyInbox
-    can :access, :coar_notify
   end
 end
