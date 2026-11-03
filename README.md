@@ -61,7 +61,7 @@ bin/rails runner "
 
 1. Sign in and open `/coar_notify`, then **Manage connections**. Add a Notify service whose inbox URL points at the service you want to send requests to.
 2. Create a Dataset with a PDF. On its page (as someone who can edit it) use **Request Endorsement** or **Request Review**. A row appears on the Notify dashboard.
-3. Notifications from the inbox are fetched by `Hyrax::CoarNotify::FetchNotificationsJob`. Under Sidekiq it runs every five minutes (`config/sidekiq.yml`). To run it once by hand: `bin/rails runner "Hyrax::CoarNotify::FetchNotificationsJob.perform_now"`. An "Announce Endorsement" or "Announce Review" notification is then shown on the work page.
+3. Notifications from the inbox are fetched by `Hyrax::CoarNotify::FetchNotificationsJob`. Under Sidekiq it runs every five minutes (the gem registers the schedule; `config/sidekiq.yml` sets `:dynamic: true` so it is picked up). To run it once by hand: `bin/rails runner "Hyrax::CoarNotify::FetchNotificationsJob.perform_now"`. An "Announce Endorsement" or "Announce Review" notification is then shown on the work page.
 
 ### Where the gem is wired in
 
