@@ -1,0 +1,10 @@
+<%
+  redis_url = ENV['REDIS_URL'].presence ||
+              "redis://#{ENV.fetch('REDIS_HOST', 'localhost')}:#{ENV.fetch('REDIS_PORT', '6379')}/0"
+%>
+development:
+  url: <%= redis_url %>
+test:
+  url: <%= redis_url %>
+production:
+  url: <%= redis_url %>
