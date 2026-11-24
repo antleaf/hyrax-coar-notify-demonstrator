@@ -2,7 +2,13 @@ Rails.application.routes.draw do
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
         mount BrowseEverything::Engine => '/browse'
   mount Blacklight::Engine => '/'
-  
+
+  authenticate :user, lambda { |u| u.admin? } do
+    require 'sidekiq/web'
+    require 'sidekiq-scheduler/web' # adds the Recurring Jobs tab
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [], as: 'catalog', path: '/catalog', controller: 'catalog' do

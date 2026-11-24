@@ -14,7 +14,7 @@ networks:
 
 services:
   solr:
-    image: solr:9
+    image: solr:9.10
     env_file:
       - .env
     environment:
@@ -124,7 +124,7 @@ services:
 
   workers:
     <<: *app
-    command: bash -c "bundle install && bundle exec sidekiq"
+    command: bash -c "bundle install && bundle exec sidekiq -C config/sidekiq.yml"
     restart: unless-stopped
     depends_on:
       - appdb
@@ -156,4 +156,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
